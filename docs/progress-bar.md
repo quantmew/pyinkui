@@ -2,40 +2,44 @@
 
 > `ProgressBar` is an extended version of [`Spinner`](spinner.md), where it's possible to calculate a progress percentage.
 
-[Theme](../source/components/progress-bar/theme.ts) | [Example code](../examples/progress-bar.tsx)
+[Example code](../examples/progress-bar.py)
 
 ## Usage
 
-```tsx
-import React, {useEffect, useState} from 'react';
-import {render, Box} from 'ink';
-import {ProgressBar} from '@inkjs/ui';
+```python
+import threading
+import time
 
-function Example() {
-	const [progress, setProgress] = useState(0);
+from pyinkui import Box, ProgressBar, render
+from pyinkcli.hooks import useEffect, useState
 
-	useEffect(() => {
-		if (progress === 100) {
-			return;
-		}
 
-		const timer = setTimeout(() => {
-			setProgress(progress + 1);
-		}, 50);
+def App():
+    value, setValue = useState(0)
 
-		return () => {
-			clearInterval(timer);
-		};
-	}, [progress]);
+    def effect():
+        stop = threading.Event()
 
-	return (
-		<Box width={30}>
-			<ProgressBar value={progress} />
-		</Box>
-	);
-}
+        def worker():
+            current = 0
+            while current < 100 and not stop.wait(0.05):
+                current += 5
+                setValue(current)
 
-render(<Example />);
+        thread = threading.Thread(target=worker, daemon=True)
+        thread.start()
+
+        def cleanup():
+            stop.set()
+
+        return cleanup
+
+    useEffect(effect, ())
+    return Box(ProgressBar(value=value), width=20)
+
+
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 <img src="../media/progress-bar.gif" width="400">

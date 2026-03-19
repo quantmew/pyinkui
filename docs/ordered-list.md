@@ -2,44 +2,24 @@
 
 > `OrderedList` is used to show lists of numbered items.
 
-[Theme](../source/components/ordered-list/theme.ts) | [Example code](../examples/ordered-list.tsx)
+[Example code](../examples/ordered-list.py)
 
 ## Usage
 
-```tsx
-import React from 'react';
-import {render, Box, Text} from 'ink';
-import {OrderedList} from '@inkjs/ui';
+```python
+from pyinkui import OrderedList, Text, render
 
-function Example() {
-	return (
-		<OrderedList>
-			<OrderedList.Item>
-				<Text>Red</Text>
-			</OrderedList.Item>
 
-			<OrderedList.Item>
-				<Text>Green</Text>
+def App():
+    return OrderedList(
+        OrderedList.Item(Text('Red')),
+        OrderedList.Item(Text('Green')),
+        OrderedList.Item(Text('Blue')),
+    )
 
-				<OrderedList>
-					<OrderedList.Item>
-						<Text>Light</Text>
-					</OrderedList.Item>
 
-					<OrderedList.Item>
-						<Text>Dark</Text>
-					</OrderedList.Item>
-				</OrderedList>
-			</OrderedList.Item>
-
-			<OrderedList.Item>
-				<Text>Blue</Text>
-			</OrderedList.Item>
-		</OrderedList>
-	);
-}
-
-render(<Example />);
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 <img src="../media/ordered-list.png" width="400">

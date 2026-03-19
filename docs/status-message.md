@@ -2,27 +2,20 @@
 
 > `StatusMessage` can also be used to indicate a status, but when longer explanation of such status is required.
 
-[Theme](../source/components/status-message/theme.ts) | [Example code](../examples/status-message.tsx)
+[Example code](../examples/status-message.py)
 
 ## Usage
 
-```tsx
-import React from 'react';
-import {render, Box} from 'ink';
-import {StatusMessage} from '@inkjs/ui';
+```python
+from pyinkui import StatusMessage, render
 
-function Example() {
-	return (
-		<Box flexDirection="column" padding={2}>
-			<StatusMessage variant="success">Success</StatusMessage>
-			<StatusMessage variant="error">Error</StatusMessage>
-			<StatusMessage variant="warning">Warning</StatusMessage>
-			<StatusMessage variant="info">Info</StatusMessage>
-		</Box>
-	);
-}
 
-render(<Example />);
+def App():
+    return StatusMessage('Ready', variant='success')
+
+
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 <img src="../media/status-message.png" width="400">

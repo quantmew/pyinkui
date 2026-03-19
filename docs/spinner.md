@@ -2,20 +2,20 @@
 
 > `Spinner` indicates that something is being processed and CLI is waiting for it to complete.
 
-[Theme](../source/components/spinner/theme.ts) | [Example code](../examples/spinner.tsx)
+[Example code](../examples/spinner.py)
 
 ## Usage
 
-```tsx
-import React from 'react';
-import {render, Box} from 'ink';
-import {Spinner} from '@inkjs/ui';
+```python
+from pyinkui import Spinner, render
 
-function Example() {
-	return <Spinner label="Loading" />;
-}
 
-render(<Example />);
+def App():
+    return Spinner(label='Loading')
+
+
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 <img src="../media/spinner.gif" width="400">

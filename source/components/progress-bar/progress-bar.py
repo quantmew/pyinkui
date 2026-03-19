@@ -1,4 +1,4 @@
-from pyinkcli import Text, measureElement
+from pyinkcli import Box, Text, measureElement
 from pyinkcli.component import createElement
 from pyinkcli.hooks._runtime import useState
 from pyinkui.theme import useComponentTheme
@@ -10,7 +10,6 @@ def _ProgressBar(*, value):
 
     if ref is not None:
         dimensions = measureElement(ref)
-
         if dimensions.width != width:
             setWidth(dimensions.width)
 
@@ -28,7 +27,7 @@ def _ProgressBar(*, value):
     if remaining > 0:
         children.append(Text(config()['remainingCharacter'] * remaining, **styles['remaining']()))
 
-    return createElement('ink-box', *children, ref=setRef, style=styles['container']())
+    return Box(*children, ref=setRef, **styles['container']())
 
 
 def ProgressBar(*, value):

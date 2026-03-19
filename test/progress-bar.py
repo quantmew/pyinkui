@@ -1,10 +1,10 @@
 from pyinkui import Box, ProgressBar
-from tests.helpers import RenderHarness
+from tests.helpers import RenderHarness, stripAnsi
 
 
 def test_progress_bar():
     harness = RenderHarness(Box(ProgressBar(value=50), width=20))
     try:
-        assert harness.lastFrame() != ''
+        assert stripAnsi(harness.lastFrame()) == '██████████░░░░░░░░░░'
     finally:
         harness.cleanup()

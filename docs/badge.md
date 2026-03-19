@@ -2,27 +2,26 @@
 
 > `Badge` can be used to indicate a status of a certain item, usually positioned nearby the element it's related to.
 
-[Theme](../source/components/badge/theme.ts) | [Example code](../examples/badge.tsx)
+[Example code](../examples/badge.py)
 
 ## Usage
 
-```tsx
-import React from 'react';
-import {render, Box} from 'ink';
-import {Badge} from '@inkjs/ui';
+```python
+from pyinkui import Badge, Box, render
 
-function Example() {
-	return (
-		<Box gap={2}>
-			<Badge color="green">Pass</Badge>
-			<Badge color="red">Fail</Badge>
-			<Badge color="yellow">Warn</Badge>
-			<Badge color="blue">Todo</Badge>
-		</Box>
-	);
-}
 
-render(<Example />);
+def App():
+    return Box(
+        Badge('Pass', color='green'),
+        Badge('Fail', color='red'),
+        Badge('Warn', color='yellow'),
+        Badge('Todo', color='blue'),
+        gap=2,
+    )
+
+
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 <img src="../media/badge.png" width="400">

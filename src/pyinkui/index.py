@@ -1,7 +1,3 @@
-from pyinkui.compat import patchRefSupport
-
-patchRefSupport()
-
 from pyinkcli import Box, Text, render, renderToString, measureElement
 from pyinkui.components.alert import Alert
 from pyinkui.components.badge import Badge

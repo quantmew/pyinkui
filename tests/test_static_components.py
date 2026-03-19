@@ -70,6 +70,17 @@ def test_unordered_list_custom_marker():
 def test_progress_bar_rerender_width():
     harness = RenderHarness(Box(ProgressBar(value=50), width=20))
     try:
-        assert harness.lastFrame() != ''
+        assert stripAnsi(harness.lastFrame()) == '██████████░░░░░░░░░░'
+        harness.rerender(Box(ProgressBar(value=75), width=20))
+        assert stripAnsi(harness.lastFrame()) == '███████████████░░░░░'
+    finally:
+        harness.cleanup()
+
+
+def test_progress_bar_initial_width_renders_remaining_track():
+    harness = RenderHarness(Box(ProgressBar(value=50), width=20))
+    try:
+        harness.rerender(Box(ProgressBar(value=0), width=20))
+        assert stripAnsi(harness.lastFrame()) == '░░░░░░░░░░░░░░░░░░░░'
     finally:
         harness.cleanup()

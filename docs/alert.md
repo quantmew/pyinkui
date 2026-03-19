@@ -2,32 +2,27 @@
 
 > `Alert` is used to focus user's attention to important messages.
 
-[Theme](../source/components/alert/theme.ts) | [Example code](../examples/alert.tsx)
+[Example code](../examples/alert.py)
 
 ## Usage
 
-```tsx
-import React from 'react';
-import {render, Box} from 'ink';
-import {Alert} from '@inkjs/ui';
+```python
+from pyinkui import Alert, Box, render
 
-function Example() {
-	return (
-		<Box flexDirection="column" width={60} gap={1}>
-			<Alert variant="success">A new version of this CLI is available</Alert>
 
-			<Alert variant="error">Your license is expired</Alert>
+def App():
+    return Box(
+        Alert('A new version of this CLI is available', variant='success'),
+        Alert('Your license is expired', variant='error'),
+        Alert('Current version of this CLI has been deprecated', variant='warning'),
+        Alert('API won't be available tomorrow night', variant='info'),
+        flexDirection='column',
+        width=60,
+    )
 
-			<Alert variant="warning">
-				Current version of this CLI has been deprecated
-			</Alert>
 
-			<Alert variant="info">API won't be available tomorrow night</Alert>
-		</Box>
-	);
-}
-
-render(<Example />);
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 <img src="../media/alert.png" width="600">

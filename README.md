@@ -4,9 +4,18 @@
 
 ## Installation
 
-`pyproject.toml` installs `pyinkcli` from its Git repository:
+`pyproject.toml` installs `pyinkcli` directly from:
+
+- `https://github.com/quantmew/pyinkcli.git`
 
 ```bash
+pip install -e .
+```
+
+If you want to install the runtime explicitly first:
+
+```bash
+pip install "pyinkcli @ git+https://github.com/quantmew/pyinkcli.git"
 pip install -e .
 ```
 

@@ -2,41 +2,29 @@
 
 > `ConfirmInput` shows a common "Y/n" input to confirm or cancel an operation your CLI wants to perform.
 
-[Theme](../source/components/confirm-input/theme.ts) | [Example code](../examples/confirm-input.tsx)
+[Example code](../examples/confirm-input.py)
 
 ## Usage
 
-```tsx
-import React, {useState} from 'react';
-import {render, Box, Text} from 'ink';
-import {ConfirmInput} from '@inkjs/ui';
+```python
+from pyinkui import Box, ConfirmInput, Text, render
+from pyinkcli.hooks import useState
 
-function Example() {
-	const [choice, setChoice] = useState<'agreed' | 'disagreed' | undefined>();
 
-	return (
-		<Box gap={1}>
-			{!choice && (
-				<>
-					<Text bold>Do you agree with terms of service?</Text>
-					<ConfirmInput
-						onConfirm={() => {
-							setChoice('agreed');
-						}}
-						onCancel={() => {
-							setChoice('disagreed');
-						}}
-					/>
-				</>
-			)}
+def App():
+    status, setStatus = useState('Waiting for confirmation')
+    return Box(
+        Text(status),
+        ConfirmInput(
+            onConfirm=lambda: setStatus('Confirmed'),
+            onCancel=lambda: setStatus('Cancelled'),
+        ),
+        flexDirection='column',
+    )
 
-			{choice === 'agreed' && <Text>I know you haven't read them, but ok</Text>}
-			{choice === 'disagreed' && <Text>Ok, whatever</Text>}
-		</Box>
-	);
-}
 
-render(<Example />);
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 ## Props

@@ -2,44 +2,24 @@
 
 > `UnorderedList` is used to show lists of items.
 
-[Theme](../source/components/unordered-list/theme.ts) | [Example code](../examples/unordered-list.tsx)
+[Example code](../examples/unordered-list.py)
 
 ## Usage
 
-```tsx
-import React from 'react';
-import {render, Box, Text} from 'ink';
-import {UnorderedList} from '@inkjs/ui';
+```python
+from pyinkui import UnorderedList, Text, render
 
-function Example() {
-	return (
-		<UnorderedList>
-			<UnorderedList.Item>
-				<Text>Red</Text>
-			</UnorderedList.Item>
 
-			<UnorderedList.Item>
-				<Text>Green</Text>
+def App():
+    return UnorderedList(
+        UnorderedList.Item(Text('Red')),
+        UnorderedList.Item(Text('Green')),
+        UnorderedList.Item(Text('Blue')),
+    )
 
-				<UnorderedList>
-					<UnorderedList.Item>
-						<Text>Light</Text>
-					</UnorderedList.Item>
 
-					<UnorderedList.Item>
-						<Text>Dark</Text>
-					</UnorderedList.Item>
-				</UnorderedList>
-			</UnorderedList.Item>
-
-			<UnorderedList.Item>
-				<Text>Blue</Text>
-			</UnorderedList.Item>
-		</UnorderedList>
-	);
-}
-
-render(<Example />);
+if __name__ == '__main__':
+    render(App).wait_until_exit()
 ```
 
 <img src="../media/unordered-list.png" width="400">
