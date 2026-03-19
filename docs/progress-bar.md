@@ -8,34 +8,29 @@
 
 ```python
 import threading
-import time
-
-from pyinkui import Box, ProgressBar, render
+from pyinkcli import Box, render
+from pyinkui import ProgressBar
 from pyinkcli.hooks import useEffect, useState
 
 
 def App():
-    value, setValue = useState(0)
+    progress, setProgress = useState(0)
 
     def effect():
-        stop = threading.Event()
+        if progress == 100:
+            return None
 
-        def worker():
-            current = 0
-            while current < 100 and not stop.wait(0.05):
-                current += 5
-                setValue(current)
-
-        thread = threading.Thread(target=worker, daemon=True)
-        thread.start()
+        timer = threading.Timer(0.05, lambda: setProgress(progress + 1))
+        timer.daemon = True
+        timer.start()
 
         def cleanup():
-            stop.set()
+            timer.cancel()
 
         return cleanup
 
-    useEffect(effect, ())
-    return Box(ProgressBar(value=value), width=20)
+    useEffect(effect, (progress,))
+    return Box(ProgressBar(value=progress), padding=2, width=30)
 
 
 if __name__ == '__main__':

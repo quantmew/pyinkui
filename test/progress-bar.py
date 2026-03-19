@@ -1,4 +1,5 @@
-from pyinkui import Box, ProgressBar
+from pyinkcli import Box
+from pyinkui import ProgressBar
 from tests.helpers import RenderHarness, stripAnsi
 
 

@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import Box, ConfirmInput, Text, render
+from pyinkcli import Box, Text, render
+from pyinkui import ConfirmInput
 from pyinkcli.hooks import useState
 
 

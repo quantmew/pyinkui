@@ -1,4 +1,5 @@
-from pyinkui import Badge, renderToString
+from pyinkcli import renderToString
+from pyinkui import Badge
 from tests.helpers import stripAnsi
 
 

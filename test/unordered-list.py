@@ -1,4 +1,5 @@
-from pyinkui import ThemeProvider, UnorderedList, Text, defaultTheme, extendTheme, renderToString
+from pyinkcli import Text, renderToString
+from pyinkui import ThemeProvider, UnorderedList, defaultTheme, extendTheme
 
 
 def test_custom_marker():

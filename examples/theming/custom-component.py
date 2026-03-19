@@ -1,16 +1,20 @@
-import _bootstrap  # noqa: F401
+from pyinkcli import Text
+from pyinkcli import render
+from pyinkui import ThemeProvider, defaultTheme, extendTheme, use_component_theme
 
-from pyinkui import Badge, ThemeProvider, defaultTheme, extendTheme, render
+
+def custom_label():
+    styles = use_component_theme('CustomLabel')
+    return Text('Hello world', **styles['label']())
 
 
 customTheme = extendTheme(
     defaultTheme,
     {
         'components': {
-            'Badge': {
+            'CustomLabel': {
                 'styles': {
-                    'container': lambda props=None: {'backgroundColor': 'cyan'},
-                    'label': lambda props=None: {'color': 'black', 'bold': True},
+                    'label': lambda: {'color': 'green'},
                 }
             }
         }
@@ -19,7 +23,7 @@ customTheme = extendTheme(
 
 
 def App():
-    return ThemeProvider(Badge('custom'), theme=customTheme)
+    return ThemeProvider(custom_label(), theme=customTheme)
 
 
 if __name__ == '__main__':

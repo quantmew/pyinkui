@@ -1,4 +1,5 @@
-from pyinkui import OrderedList, Text, renderToString
+from pyinkcli import Text, renderToString
+from pyinkui import OrderedList
 
 
 def test_ordered_list():

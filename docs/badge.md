@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import Badge, Box, render
+from pyinkcli import Box, render
+from pyinkui import Badge
 
 
 def App():

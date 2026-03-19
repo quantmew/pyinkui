@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import PasswordInput, render
+from pyinkcli import render
+from pyinkui import PasswordInput
 
 
 def App():

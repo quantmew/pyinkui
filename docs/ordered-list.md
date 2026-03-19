@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import OrderedList, Text, render
+from pyinkcli import Text, render
+from pyinkui import OrderedList
 
 
 def App():

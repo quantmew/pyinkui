@@ -1,20 +1,24 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import Box, ConfirmInput, Text, render
+from pyinkcli import Box, Text, render
+from pyinkui import ConfirmInput
 from pyinkcli.hooks import useState
 
 
-
 def App():
-    status, setStatus = useState('Waiting for confirmation')
-    return Box(
-        Text(status),
-        ConfirmInput(
-            onConfirm=lambda: setStatus('Confirmed'),
-            onCancel=lambda: setStatus('Cancelled'),
-        ),
-        flexDirection='column',
-    )
+    choice, set_choice = useState(None)
+
+    if choice is None:
+        return Box(
+            Text('Do you agree with terms of service?', bold=True),
+            ConfirmInput(
+                onConfirm=lambda: set_choice('agreed'),
+                onCancel=lambda: set_choice('disagreed'),
+            ),
+            gap=1,
+        )
+    elif choice == 'agreed':
+        return Text("I know you haven't read them, but ok")
+    else:
+        return Text('Ok, whatever')
 
 
 if __name__ == '__main__':

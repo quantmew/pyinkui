@@ -1,11 +1,17 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import EmailInput, render
-
+from pyinkcli import Box, Text, render
+from pyinkui import EmailInput
+from pyinkcli.hooks import useState
 
 
 def App():
-    return EmailInput(placeholder='Enter email...')
+    value, setValue = useState('')
+    return Box(
+        EmailInput(placeholder='Enter email...', onChange=setValue),
+        Text(f'Input value: "{value}"'),
+        flex_direction='column',
+        padding=2,
+        gap=1,
+    )
 
 
 if __name__ == '__main__':

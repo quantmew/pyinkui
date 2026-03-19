@@ -1,4 +1,5 @@
-from pyinkui import StatusMessage, renderToString
+from pyinkcli import renderToString
+from pyinkui import StatusMessage
 
 
 def test_error():

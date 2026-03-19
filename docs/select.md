@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import Select, render
+from pyinkcli import render
+from pyinkui import Select
 
 options = [
     {'label': 'Red', 'value': 'red'},

@@ -1,6 +1,6 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import Spinner, ThemeProvider, defaultTheme, extendTheme, render
+from pyinkcli import Box, Text
+from pyinkcli import render
+from pyinkui import Spinner, ThemeProvider, defaultTheme, extendTheme
 
 
 customTheme = extendTheme(
@@ -9,7 +9,7 @@ customTheme = extendTheme(
         'components': {
             'Spinner': {
                 'styles': {
-                    'frame': lambda props=None: {'color': 'green'},
+                    'frame': lambda: {'color': 'magenta'},
                 }
             }
         }
@@ -18,7 +18,13 @@ customTheme = extendTheme(
 
 
 def App():
-    return ThemeProvider(Spinner(label='Loading'), theme=customTheme)
+    return ThemeProvider(
+        Box(
+            Spinner(label='Loading'),
+            padding=2,
+        ),
+        theme=customTheme,
+    )
 
 
 if __name__ == '__main__':

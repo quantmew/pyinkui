@@ -1,11 +1,16 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import Badge, render
-
+from pyinkcli import Box, render
+from pyinkui import Badge
 
 
 def App():
-    return Badge('Success', color='green')
+    return Box(
+        Badge('Pass', color='green'),
+        Badge('Fail', color='red'),
+        Badge('Warn', color='yellow'),
+        Badge('Todo', color='blue'),
+        gap=2,
+        padding=2,
+    )
 
 
 if __name__ == '__main__':

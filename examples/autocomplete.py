@@ -1,10 +1,43 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import TextInput, render
+from pyinkcli import Box, Text, render
+from pyinkui import Select, TextInput
+from pyinkcli.hooks import useMemo, useState
 
 
 def App():
-    return TextInput(placeholder='Start typing...', suggestions=['Abby', 'Ada', 'Aiko'])
+    filter_text, set_filter_text = useState('')
+    value, setValue = useState(None)
+
+    options = useMemo(
+        lambda: [
+            {'label': 'Red', 'value': 'red'},
+            {'label': 'Green', 'value': 'green'},
+            {'label': 'Yellow', 'value': 'yellow'},
+            {'label': 'Blue', 'value': 'blue'},
+            {'label': 'Magenta', 'value': 'magenta'},
+            {'label': 'Cyan', 'value': 'cyan'},
+            {'label': 'White', 'value': 'white'},
+        ],
+        [],
+    )
+
+    filtered_options = [
+        option for option in options if filter_text in option['label']
+    ]
+
+    if value is None:
+        return Box(
+            TextInput(onChange=set_filter_text),
+            Select(
+                options=filtered_options,
+                highlight_text=filter_text,
+                onChange=setValue,
+                default_limit=5,
+            ),
+            flex_direction='column',
+            gap=1,
+        )
+    else:
+        return Text(f"You've selected {value}")
 
 
 if __name__ == '__main__':

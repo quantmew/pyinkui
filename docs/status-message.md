@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import StatusMessage, render
+from pyinkcli import render
+from pyinkui import StatusMessage
 
 
 def App():

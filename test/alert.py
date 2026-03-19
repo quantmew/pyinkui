@@ -1,4 +1,5 @@
-from pyinkui import Alert, Box, renderToString
+from pyinkcli import Box, renderToString
+from pyinkui import Alert
 
 
 def test_error():

@@ -1,12 +1,12 @@
 from pyinkcli import Box, Text, render
-from pyinkui import MultiSelect
+from pyinkui import Select
 from pyinkcli.hooks import useState
 
 
 def App():
-    value, setValue = useState([])
+    value, setValue = useState(None)
     return Box(
-        MultiSelect(
+        Select(
             options=[
                 {'label': 'Red', 'value': 'red'},
                 {'label': 'Green', 'value': 'green'},
@@ -18,7 +18,7 @@ def App():
             ],
             onChange=setValue,
         ),
-        Text(f"Selected values: {', '.join(value)}"),
+        Text(f'Selected value: {value}'),
         flex_direction='column',
         padding=2,
         gap=1,

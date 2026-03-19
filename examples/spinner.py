@@ -1,11 +1,12 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import Spinner, render
-
+from pyinkcli import Box, render
+from pyinkui import Spinner
 
 
 def App():
-    return Spinner(label='Loading')
+    return Box(
+        Spinner(label='Loading'),
+        padding=2,
+    )
 
 
 if __name__ == '__main__':

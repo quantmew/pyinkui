@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import Alert, Box, render
+from pyinkcli import Box, render
+from pyinkui import Alert
 
 
 def App():

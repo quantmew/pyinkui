@@ -54,7 +54,6 @@ include = [
     "/docs",
     "/examples",
     "/media",
-    "/source",
     "/test",
     "/tests",
 ]

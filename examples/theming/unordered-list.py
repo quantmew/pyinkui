@@ -1,6 +1,5 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import ThemeProvider, UnorderedList, Text, defaultTheme, extendTheme, render
+from pyinkcli import Box, Text, render
+from pyinkui import ThemeProvider, UnorderedList, defaultTheme, extendTheme
 
 
 customTheme = extendTheme(
@@ -8,7 +7,7 @@ customTheme = extendTheme(
     {
         'components': {
             'UnorderedList': {
-                'config': lambda props=None: {'marker': ['+', '*']},
+                'config': lambda: {'marker': '+'},
             }
         }
     },
@@ -17,15 +16,19 @@ customTheme = extendTheme(
 
 def App():
     return ThemeProvider(
-        UnorderedList(
-            UnorderedList.Item(Text('Red')),
-            UnorderedList.Item(
-                Text('Green'),
-                UnorderedList(
-                    UnorderedList.Item(Text('Light')),
-                    UnorderedList.Item(Text('Dark')),
+        Box(
+            UnorderedList(
+                UnorderedList.Item(Text('Red')),
+                UnorderedList.Item(
+                    Text('Green'),
+                    UnorderedList(
+                        UnorderedList.Item(Text('Light')),
+                        UnorderedList.Item(Text('Dark')),
+                    ),
                 ),
+                UnorderedList.Item(Text('Blue')),
             ),
+            padding=2,
         ),
         theme=customTheme,
     )

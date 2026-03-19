@@ -1,11 +1,18 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import Alert, Box, render
-
+from pyinkcli import Box, render
+from pyinkui import Alert
 
 
 def App():
-    return Box(Alert('Message', variant='error', title='Error'), width=16)
+    return Box(
+        Alert('A new version of this CLI is available', variant='success'),
+        Alert('Your license is expired', variant='error'),
+        Alert('Current version of this CLI has been deprecated', variant='warning'),
+        Alert("API won't be available tomorrow night", variant='info'),
+        flex_direction='column',
+        padding=2,
+        width=60,
+        gap=1,
+    )
 
 
 if __name__ == '__main__':

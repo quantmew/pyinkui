@@ -5,7 +5,7 @@ import time
 from io import StringIO
 
 from pyinkcli.hooks.use_input import _dispatch_input
-from pyinkui import render
+from pyinkcli import render
 
 
 class RenderHarness:

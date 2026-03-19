@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import EmailInput, render
+from pyinkcli import render
+from pyinkui import EmailInput
 
 
 def App():

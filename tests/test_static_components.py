@@ -1,16 +1,14 @@
+from pyinkcli import Box, Text, renderToString
 from pyinkui import (
     Alert,
     Badge,
-    Box,
     OrderedList,
     ProgressBar,
     StatusMessage,
-    Text,
     ThemeProvider,
     UnorderedList,
     defaultTheme,
     extendTheme,
-    renderToString,
 )
 from tests.helpers import RenderHarness, stripAnsi
 

@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import MultiSelect, render
+from pyinkcli import render
+from pyinkui import MultiSelect
 
 options = [
     {'label': 'Red', 'value': 'red'},

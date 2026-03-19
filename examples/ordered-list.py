@@ -1,14 +1,21 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import OrderedList, Text, render
-
+from pyinkcli import Box, Text, render
+from pyinkui import OrderedList
 
 
 def App():
-    return OrderedList(
-        OrderedList.Item(Text('Red')),
-        OrderedList.Item(Text('Green')),
-        OrderedList.Item(Text('Blue')),
+    return Box(
+        OrderedList(
+            OrderedList.Item(Text('Red')),
+            OrderedList.Item(
+                Text('Green'),
+                OrderedList(
+                    OrderedList.Item(Text('Light')),
+                    OrderedList.Item(Text('Dark')),
+                ),
+            ),
+            OrderedList.Item(Text('Blue')),
+        ),
+        padding=2,
     )
 
 

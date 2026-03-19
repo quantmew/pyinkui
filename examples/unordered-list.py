@@ -1,14 +1,21 @@
-import _bootstrap  # noqa: F401
-
-from pyinkui import UnorderedList, Text, render
-
+from pyinkcli import Box, Text, render
+from pyinkui import UnorderedList
 
 
 def App():
-    return UnorderedList(
-        UnorderedList.Item(Text('Red')),
-        UnorderedList.Item(Text('Green')),
-        UnorderedList.Item(Text('Blue')),
+    return Box(
+        UnorderedList(
+            UnorderedList.Item(Text('Red')),
+            UnorderedList.Item(
+                Text('Green'),
+                UnorderedList(
+                    UnorderedList.Item(Text('Light')),
+                    UnorderedList.Item(Text('Dark')),
+                ),
+            ),
+            UnorderedList.Item(Text('Blue')),
+        ),
+        padding=2,
     )
 
 

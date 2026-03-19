@@ -1,8 +1,7 @@
 import threading
 
-import _bootstrap  # noqa: F401
-
-from pyinkui import Box, ProgressBar, render
+from pyinkcli import Box, render
+from pyinkui import ProgressBar
 from pyinkcli.hooks import useEffect, useState
 
 

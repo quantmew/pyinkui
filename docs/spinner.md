@@ -7,7 +7,8 @@
 ## Usage
 
 ```python
-from pyinkui import Spinner, render
+from pyinkcli import render
+from pyinkui import Spinner
 
 
 def App():
