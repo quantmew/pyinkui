@@ -29,9 +29,9 @@ def App():
             TextInput(onChange=set_filter_text),
             Select(
                 options=filtered_options,
-                highlight_text=filter_text,
+                highlightText=filter_text,
                 onChange=setValue,
-                default_limit=5,
+                visibleOptionCount=5,
             ),
             flex_direction='column',
             gap=1,

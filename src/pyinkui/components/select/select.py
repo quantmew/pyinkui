@@ -1,8 +1,5 @@
-from __future__ import annotations
-
 from pyinkcli import Box, Text, useInput
 from pyinkcli.component import createElement
-from pyinkcli.component import isElement
 from pyinkcli.hooks._runtime import useCallback, useEffect, useMemo, useReducer, useState
 from pyinkui._figures import pointer, tick
 from pyinkui.lib.option_map import OptionMap

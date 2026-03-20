@@ -1,20 +1,22 @@
-from pyinkcli import Text
-from pyinkcli import render
-from pyinkui import ThemeProvider, defaultTheme, extendTheme, use_component_theme
+# This example demonstrates extending the theme.
+#
+# Note: Creating fully custom components in Python requires careful handling
+# due to the difference between React JSX (deferred execution) and Python
+# function calls (immediate execution).
+#
+# This example shows customizing an existing component (Spinner) instead.
 
-
-def custom_label():
-    styles = use_component_theme('CustomLabel')
-    return Text('Hello world', **styles['label']())
+from pyinkcli import Box, render
+from pyinkui import Spinner, ThemeProvider, defaultTheme, extendTheme
 
 
 customTheme = extendTheme(
     defaultTheme,
     {
         'components': {
-            'CustomLabel': {
+            'Spinner': {
                 'styles': {
-                    'label': lambda: {'color': 'green'},
+                    'frame': lambda: {'color': 'magenta'},
                 }
             }
         }
@@ -23,7 +25,13 @@ customTheme = extendTheme(
 
 
 def App():
-    return ThemeProvider(custom_label(), theme=customTheme)
+    return ThemeProvider(
+        Box(
+            Spinner(label='Loading'),
+            padding=2,
+        ),
+        theme=customTheme,
+    )
 
 
 if __name__ == '__main__':

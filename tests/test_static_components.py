@@ -82,3 +82,8 @@ def test_progress_bar_initial_width_renders_remaining_track():
         assert stripAnsi(harness.lastFrame()) == '░░░░░░░░░░░░░░░░░░░░'
     finally:
         harness.cleanup()
+
+
+def test_progress_bar_without_measured_width_renders_nothing():
+    output = renderToString(ProgressBar(value=50))
+    assert stripAnsi(output) == ''

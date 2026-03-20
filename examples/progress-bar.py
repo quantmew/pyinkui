@@ -1,17 +1,16 @@
 import threading
 
 from pyinkcli import Box, render
-from pyinkui import ProgressBar
 from pyinkcli.hooks import useEffect, useState
+from pyinkui import ProgressBar
 
 
-
-def App():
+def Example():
     progress, setProgress = useState(0)
 
     def effect():
         if progress == 100:
-            return None
+            return
 
         timer = threading.Timer(0.05, lambda: setProgress(progress + 1))
         timer.daemon = True
@@ -27,4 +26,4 @@ def App():
 
 
 if __name__ == '__main__':
-    render(App).wait_until_exit()
+    render(Example).wait_until_exit()
