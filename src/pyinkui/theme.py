@@ -29,9 +29,9 @@ spinnerTheme = {
     }
 }
 
-textInputTheme = {'styles': {'value': lambda props=None: {}}}
-emailInputTheme = {'styles': {'value': lambda props=None: {}}}
-passwordInputTheme = {'styles': {'value': lambda props=None: {}}}
+textInputTheme: dict[str, Any] = {'styles': {'value': lambda props=None: {}}}
+emailInputTheme: dict[str, Any] = {'styles': {'value': lambda props=None: {}}}
+passwordInputTheme: dict[str, Any] = {'styles': {'value': lambda props=None: {}}}
 
 selectTheme = {
     'styles': {

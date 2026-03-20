@@ -1,4 +1,4 @@
-from pyinkcli import Box, Text
+from pyinkcli import Box
 from pyinkcli import render
 from pyinkui import Spinner, ThemeProvider, defaultTheme, extendTheme
 

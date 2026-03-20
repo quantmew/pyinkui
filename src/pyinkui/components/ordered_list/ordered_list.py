@@ -1,23 +1,32 @@
+from __future__ import annotations
+
+from typing import Any, Callable, Protocol, cast
+
 from pyinkcli import Box, Text
+from pyinkcli._component_runtime import scopeRender
 from pyinkcli.component import createElement
 from pyinkcli.component import isElement
-from pyinkcli._component_runtime import scopeRender
 from pyinkui._contexts import getOrderedListContext, getOrderedListItemContext, provideOrderedListContext, provideOrderedListItemContext
-from pyinkui._figures import line
 from pyinkui.theme import useComponentTheme
 
 
-def _OrderedListItem(*children):
+class _ListComponent(Protocol):
+    Item: Callable[..., Any]
+
+    def __call__(self, *children: Any) -> Any: ...
+
+
+def _OrderedListItem(*children: Any) -> Any:
     marker = getOrderedListItemContext()['marker']
     styles = useComponentTheme('OrderedList')['styles']
     return Box(Text(marker, **styles['marker']()), Box(*children, **styles['content']()), **styles['listItem']())
 
 
-def OrderedListItem(*children):
+def OrderedListItem(*children: Any) -> Any:
     return createElement(_OrderedListItem, *children)
 
 
-def _OrderedList(*children):
+def _OrderedList(*children: Any) -> Any:
     parentMarker = getOrderedListContext()['marker']
     styles = useComponentTheme('OrderedList')['styles']
     numberOfItems = 0
@@ -34,12 +43,20 @@ def _OrderedList(*children):
         itemIndex += 1
         paddedMarker = f"{str(itemIndex).rjust(maxMarkerWidth)}."
         marker = f"{parentMarker}{paddedMarker}"
-        wrappedChildren.append(scopeRender(child, lambda marker=marker: provideOrderedListContext({'marker': marker}), lambda marker=marker: provideOrderedListItemContext({'marker': marker})))
+
+        def provide_list_context(item_marker: str = marker) -> Any:
+            return provideOrderedListContext({'marker': item_marker})
+
+        def provide_item_context(item_marker: str = marker) -> Any:
+            return provideOrderedListItemContext({'marker': item_marker})
+
+        wrappedChildren.append(scopeRender(child, provide_list_context, provide_item_context))
     return Box(*wrappedChildren, **styles['list']())
 
 
-def OrderedList(*children):
+def _ordered_list(*children: Any) -> Any:
     return createElement(_OrderedList, *children)
 
 
+OrderedList = cast(_ListComponent, _ordered_list)
 OrderedList.Item = OrderedListItem
