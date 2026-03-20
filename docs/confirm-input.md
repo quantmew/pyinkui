@@ -1,6 +1,6 @@
 # Confirm input
 
-> `ConfirmInput` shows a common "Y/n" input to confirm or cancel an operation your CLI wants to perform.
+> `ConfirmInput` shows a common "(Y/n)" input to confirm or cancel an operation your CLI wants to perform.
 
 [Example code](../examples/confirm-input.py)
 

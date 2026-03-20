@@ -11,7 +11,7 @@ def test_confirm_input_confirm_via_y():
         )
     )
     try:
-        assert harness.lastFrame() == 'Y/n'
+        assert harness.lastFrame() == '(Y/n)'
         harness.write('y')
         assert state['confirmed'] is True
         assert state['cancelled'] is False

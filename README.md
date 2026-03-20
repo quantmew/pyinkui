@@ -2,8 +2,6 @@
 
 `pyinkui` is a Python translation of [`@inkjs/ui`](https://github.com/vadimdemedes/ink-ui), built on top of the already-translated [`pyinkcli`](https://github.com/quantmew/pyinkcli) runtime.
 
-The repository keeps a single source of truth in `src/pyinkui/`. The old `source/` mirror layer has been removed.
-
 ## Installation
 
 `pyproject.toml` installs `pyinkcli` directly from:
@@ -11,13 +9,6 @@ The repository keeps a single source of truth in `src/pyinkui/`. The old `source
 - `https://github.com/quantmew/pyinkcli.git`
 
 ```bash
-pip install -e .
-```
-
-If you want to install the runtime explicitly first:
-
-```bash
-pip install "pyinkcli @ git+https://github.com/quantmew/pyinkcli.git"
 pip install -e .
 ```
 
