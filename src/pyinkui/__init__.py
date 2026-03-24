@@ -24,7 +24,7 @@ from pyinkui.index import useSpinner
 
 patch_pyinkcli_terminal_compat()
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "Alert",
