@@ -3,23 +3,47 @@ from pyinkcli.component import createElement
 from pyinkui.theme import useComponentTheme
 
 
-def _ConfirmInput(*, onConfirm, onCancel):
+def _ConfirmInput(
+    *,
+    isDisabled=False,
+    defaultChoice='confirm',
+    submitOnEnter=True,
+    onConfirm,
+    onCancel,
+):
     styles = useComponentTheme('ConfirmInput')['styles']
 
     def handleInput(input, key):
-        if input == 'y' or input == 'Y' or key.return_pressed:
+        if isDisabled:
+            return
+        if input == 'y' or input == 'Y':
             if onConfirm:
                 onConfirm()
-        elif input == 'n' or input == 'N' or key.escape:
+            return
+        if input == 'n' or input == 'N':
             if onCancel:
                 onCancel()
+            return
+        if (key.return_pressed or input in ('\r', '\n')) and submitOnEnter:
+            if defaultChoice == 'confirm':
+                if onConfirm:
+                    onConfirm()
+            elif onCancel:
+                onCancel()
 
-    useInput(handleInput, is_active=True)
+    useInput(handleInput)
 
     return Box(
-        Text('(Y/n)', **styles['input']({'isFocused': True})),
+        Text('Y/n' if defaultChoice == 'confirm' else 'y/N', **styles['input']({'isFocused': not isDisabled})),
     )
 
 
-def ConfirmInput(*, onConfirm, onCancel):
-    return createElement(_ConfirmInput, onConfirm=onConfirm, onCancel=onCancel)
+def ConfirmInput(*, isDisabled=False, defaultChoice='confirm', submitOnEnter=True, onConfirm, onCancel):
+    return createElement(
+        _ConfirmInput,
+        isDisabled=isDisabled,
+        defaultChoice=defaultChoice,
+        submitOnEnter=submitOnEnter,
+        onConfirm=onConfirm,
+        onCancel=onCancel,
+    )

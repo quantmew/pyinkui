@@ -1,16 +1,18 @@
 import time
 
+from pyinkcli.component import createElement
 from pyinkui import Spinner, spinners
 from tests.helpers import RenderHarness
 
 
 def test_spinner_cycles_frames():
-    harness = RenderHarness(Spinner(label='Loading'))
+    harness = RenderHarness(createElement(Spinner, label='Loading'))
     try:
         frames = []
         spinner = spinners['dots']
         for _ in range(4):
-            frames.append(harness.app._last_output)
+            harness.app.wait_until_render_flush(timeout=0.2)
+            frames.append(harness.lastFrame())
             time.sleep(spinner['interval'] / 1000)
         assert len(set(frames)) > 1
     finally:

@@ -3,7 +3,6 @@ from __future__ import annotations
 import threading
 
 from pyinkcli import Box, Text
-from pyinkcli.component import createElement
 from pyinkcli.hooks._runtime import useEffect, useState
 from pyinkui.theme import useComponentTheme
 
@@ -41,14 +40,10 @@ def useSpinner(*, type='dots'):
     return {'frame': spinner['frames'][frame] if frame < len(spinner['frames']) else ''}
 
 
-def _Spinner(*, label=None, spinnerType='dots'):
-    frame = useSpinner(type=spinnerType)['frame']
+def Spinner(*, label=None, type='dots'):
+    frame = useSpinner(type=type)['frame']
     styles = useComponentTheme('Spinner')['styles']
     children = [Text(frame, **styles['frame']())]
     if label:
         children.append(Text(label, **styles['label']()))
     return Box(*children, **styles['container']())
-
-
-def Spinner(*, label=None, type='dots'):
-    return createElement(_Spinner, label=label, spinnerType=type)

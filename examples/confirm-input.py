@@ -22,4 +22,4 @@ def App():
 
 
 if __name__ == '__main__':
-    render(App).wait_until_exit()
+    render(App, interactive=True).wait_until_exit()

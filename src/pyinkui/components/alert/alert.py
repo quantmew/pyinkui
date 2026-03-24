@@ -12,7 +12,7 @@ def _Alert(*children, variant, title=None):
         contentChildren.append(Text(title, **styles['title']()))
     contentChildren.append(Text(*children, **styles['message']()))
     return Box(
-        Box(Text(config({'variant': variant})['icon'], **styles['icon']({'variant': variant})), **styles['iconContainer']()),
+        Box(Text(f"{config({'variant': variant})['icon']} ", **styles['icon']({'variant': variant})), **styles['iconContainer']()),
         Box(*contentChildren, **styles['content']()),
         **styles['container']({'variant': variant}),
     )

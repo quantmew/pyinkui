@@ -1,20 +1,16 @@
 from __future__ import annotations
 
-from contextlib import contextmanager
-from contextvars import ContextVar
-from typing import Any, Generator
+from typing import Any
 
-_themeContext: ContextVar[dict[str, Any] | None] = ContextVar('pyinkui_theme', default=None)
+from pyinkcli.component import createElement
+from pyinkcli.packages.react import createContext, useContext
+
+_themeContext = createContext(None)
 
 
 def getThemeContext() -> dict[str, Any] | None:
-    return _themeContext.get()
+    return useContext(_themeContext)
 
 
-@contextmanager
-def provideThemeContext(theme: dict[str, Any]) -> Generator[None, None, None]:
-    token = _themeContext.set(theme)
-    try:
-        yield
-    finally:
-        _themeContext.reset(token)
+def provideThemeContext(*children: Any, theme: dict[str, Any]) -> Any:
+    return createElement(_themeContext.Provider, *children, value=theme)

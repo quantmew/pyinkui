@@ -3,10 +3,9 @@ from __future__ import annotations
 from typing import Any, Callable, Protocol, cast
 
 from pyinkcli import Box, Text
-from pyinkcli._component_runtime import scopeRender
 from pyinkcli.component import createElement
 from pyinkcli.component import isElement
-from pyinkui._contexts import getOrderedListContext, getOrderedListItemContext, provideOrderedListContext, provideOrderedListItemContext
+from pyinkui._contexts import getOrderedListContext, getOrderedListItemContext, orderedListContext, orderedListItemContext
 from pyinkui.theme import useComponentTheme
 
 
@@ -43,14 +42,13 @@ def _OrderedList(*children: Any) -> Any:
         itemIndex += 1
         paddedMarker = f"{str(itemIndex).rjust(maxMarkerWidth)}."
         marker = f"{parentMarker}{paddedMarker}"
-
-        def provide_list_context(item_marker: str = marker) -> Any:
-            return provideOrderedListContext({'marker': item_marker})
-
-        def provide_item_context(item_marker: str = marker) -> Any:
-            return provideOrderedListItemContext({'marker': item_marker})
-
-        wrappedChildren.append(scopeRender(child, provide_list_context, provide_item_context))
+        wrappedChildren.append(
+            createElement(
+                orderedListContext.Provider,
+                createElement(orderedListItemContext.Provider, child, value={'marker': marker}),
+                value={'marker': marker},
+            )
+        )
     return Box(*wrappedChildren, **styles['list']())
 
 

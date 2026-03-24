@@ -33,7 +33,7 @@ def App():
                 onChange=setValue,
                 visibleOptionCount=5,
             ),
-            flex_direction='column',
+            flexDirection='column',
             gap=1,
         )
     else:
@@ -41,4 +41,4 @@ def App():
 
 
 if __name__ == '__main__':
-    render(App).wait_until_exit()
+    render(App, interactive=True).wait_until_exit()

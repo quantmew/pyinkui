@@ -10,8 +10,13 @@ def _ProgressBar(*, value):
 
     if ref is not None:
         dimensions = measureElement(ref)
-        if dimensions.width != width:
-            setWidth(dimensions.width)
+        measured_width = dimensions.width
+        if measured_width == 0:
+            parent = getattr(ref, 'parentNode', None)
+            if parent is not None:
+                measured_width = measureElement(parent).width
+        if measured_width != width:
+            setWidth(measured_width)
 
     progress = min(100, max(0, value))
     complete = round((progress / 100) * width)

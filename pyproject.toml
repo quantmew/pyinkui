@@ -28,7 +28,7 @@ classifiers = [
     "Topic :: Terminals",
 ]
 dependencies = [
-    "pyinkcli>=0.1.1,<0.2.0",
+    "pyinkcli>=0.1.2,<0.2.0",
 ]
 
 [project.optional-dependencies]

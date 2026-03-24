@@ -83,13 +83,15 @@ def useSelectState(*, visibleOptionCount=5, options, defaultValue=None, onChange
 
 def useSelect(*, isDisabled=False, state):
     def handleInput(_input, key):
+        if isDisabled:
+            return
         if key.down_arrow:
             state['focusNextOption']()
         if key.up_arrow:
             state['focusPreviousOption']()
-        if key.return_pressed:
+        if key.return_pressed or _input in ('\r', '\n'):
             state['selectFocusedOption']()
-    useInput(handleInput, is_active=not isDisabled)
+    useInput(handleInput)
 
 
 def _SelectOption(*children, isFocused, isSelected):

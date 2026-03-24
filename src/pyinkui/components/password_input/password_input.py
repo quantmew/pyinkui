@@ -49,7 +49,10 @@ def usePasswordInputState(*, onChange=None, onSubmit=None):
 
 
 def usePasswordInput(*, isDisabled=False, state, placeholder=''):
-    renderedPlaceholder = useMemo(lambda: dim(placeholder) if (isDisabled and placeholder) else (inverse(placeholder[0]) + dim(placeholder[1:]) if placeholder else cursor), (isDisabled, placeholder))
+    renderedPlaceholder = useMemo(
+        lambda: dim(placeholder) if (isDisabled and placeholder) else (inverse(placeholder[0]) + dim(placeholder[1:]) if placeholder else cursor),
+        (isDisabled, placeholder),
+    )
 
     def renderValue():
         value = '*' * len(state['value'])
@@ -67,9 +70,11 @@ def usePasswordInput(*, isDisabled=False, state, placeholder=''):
     renderedValue = useMemo(renderValue, (isDisabled, state['value'], state['cursorOffset']))
 
     def handleInput(input, key):
-        if key.up_arrow or key.down_arrow or (key.ctrl and input == 'c') or key.tab or (key.shift and key.tab):
+        if isDisabled:
             return
-        if key.return_pressed:
+        if key.up_arrow or key.down_arrow or (key.ctrl and input == 'c') or key.name == 'tab':
+            return
+        if key.return_pressed or input in ('\r', '\n'):
             state['submit']()
             return
         if key.left_arrow:
@@ -81,7 +86,7 @@ def usePasswordInput(*, isDisabled=False, state, placeholder=''):
         elif input:
             state['insert'](input)
 
-    useInput(handleInput, is_active=not isDisabled)
+    useInput(handleInput)
     return {'inputValue': renderedValue if len(state['value']) > 0 else renderedPlaceholder}
 
 

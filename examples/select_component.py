@@ -1,29 +1,6 @@
-from pyinkcli import Box, Text, render
-from pyinkui import Select
-from pyinkcli.hooks import useState
-
-
-def App():
-    value, setValue = useState(None)
-    return Box(
-        Select(
-            options=[
-                {'label': 'Red', 'value': 'red'},
-                {'label': 'Green', 'value': 'green'},
-                {'label': 'Yellow', 'value': 'yellow'},
-                {'label': 'Blue', 'value': 'blue'},
-                {'label': 'Magenta', 'value': 'magenta'},
-                {'label': 'Cyan', 'value': 'cyan'},
-                {'label': 'White', 'value': 'white'},
-            ],
-            onChange=setValue,
-        ),
-        Text(f'Selected value: {value}'),
-        flex_direction='column',
-        padding=2,
-        gap=1,
-    )
+import runpy
+from pathlib import Path
 
 
 if __name__ == '__main__':
-    render(App).wait_until_exit()
+    runpy.run_path(str(Path(__file__).with_name('select') / 'index.py'), run_name='__main__')

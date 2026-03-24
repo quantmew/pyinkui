@@ -1,12 +1,24 @@
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[2]
+CLI_SRC = ROOT.parent / 'pyinkcli' / 'src'
+UI_SRC = ROOT / 'src'
+
+for candidate in (str(CLI_SRC), str(UI_SRC)):
+    if candidate not in sys.path:
+        sys.path.insert(0, candidate)
+
 from pyinkcli import Box, Text, render
-from pyinkui import MultiSelect
+from pyinkui import Select
 from pyinkcli.hooks import useState
 
 
 def App():
-    value, setValue = useState([])
+    value, setValue = useState('')
     return Box(
-        MultiSelect(
+        Select(
             options=[
                 {'label': 'Red', 'value': 'red'},
                 {'label': 'Green', 'value': 'green'},
@@ -18,7 +30,7 @@ def App():
             ],
             onChange=setValue,
         ),
-        Text(f"Selected values: {', '.join(value)}"),
+        Text(f'Selected value: {value}'),
         flexDirection='column',
         padding=2,
         gap=1,

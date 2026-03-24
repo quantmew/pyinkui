@@ -10,7 +10,7 @@ def _StatusMessage(*children, variant):
     styles = theme['styles']
     config = theme['config']
     return Box(
-        Box(Text(config({'variant': variant})['icon'], **styles['icon']({'variant': variant})), **styles['iconContainer']()),
+        Box(Text(f"{config({'variant': variant})['icon']} ", **styles['icon']({'variant': variant})), **styles['iconContainer']()),
         Text(*children, **styles['message']()),
         **styles['container'](),
     )

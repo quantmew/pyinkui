@@ -3,9 +3,8 @@ from __future__ import annotations
 from typing import Any, Callable, Protocol, cast
 
 from pyinkcli import Box, Text
-from pyinkcli._component_runtime import scopeRender
 from pyinkcli.component import createElement
-from pyinkui._contexts import getUnorderedListContext, getUnorderedListItemContext, provideUnorderedListContext, provideUnorderedListItemContext
+from pyinkui._contexts import getUnorderedListContext, getUnorderedListItemContext, unorderedListContext, unorderedListItemContext
 from pyinkui._figures import line as defaultMarker
 from pyinkui.theme import useComponentTheme
 
@@ -31,18 +30,20 @@ def _UnorderedList(*children: Any) -> Any:
     theme = useComponentTheme('UnorderedList')
     styles = theme['styles']
     config = theme['config']
-    listContext = {'depth': depth + 1}
+    next_list_context = {'depth': depth + 1}
     marker = config().get('marker')
     if isinstance(marker, str):
-        listItemContext = {'marker': marker}
+        next_item_context = {'marker': marker}
     elif isinstance(marker, list):
-        listItemContext = {'marker': marker[depth] if depth < len(marker) else (marker[-1] if marker else defaultMarker)}
+        next_item_context = {'marker': marker[depth] if depth < len(marker) else (marker[-1] if marker else defaultMarker)}
     else:
-        listItemContext = {'marker': defaultMarker}
-    return scopeRender(
-        Box(*children, **styles['list']()),
-        lambda: provideUnorderedListContext(listContext),
-        lambda: provideUnorderedListItemContext(listItemContext),
+        next_item_context = {'marker': defaultMarker}
+
+    content = Box(*children, **styles['list']())
+    return createElement(
+        unorderedListContext.Provider,
+        createElement(unorderedListItemContext.Provider, content, value=next_item_context),
+        value=next_list_context,
     )
 
 

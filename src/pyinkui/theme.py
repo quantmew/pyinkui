@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from pyinkcli._component_runtime import _fragment, scopeRender
 from pyinkui._merge import deepMerge
 from pyinkui._theme_context import getThemeContext, provideThemeContext
 from pyinkui._figures import info, tick, cross, warning, line, square, squareLightShade
@@ -145,8 +144,7 @@ def extendTheme(originalTheme: dict[str, Any], newTheme: dict[str, Any]) -> dict
 
 
 def ThemeProvider(*children, theme: dict[str, Any]):
-    node = children[0] if len(children) == 1 else _fragment(*children)
-    return scopeRender(node, lambda: provideThemeContext(theme))
+    return provideThemeContext(*children, theme=theme)
 
 
 def useComponentTheme(component: str):

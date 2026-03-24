@@ -93,15 +93,17 @@ def useMultiSelectState(*, visibleOptionCount=5, options, defaultValue=None, onC
 
 def useMultiSelect(*, isDisabled=False, state):
     def handleInput(input, key):
+        if isDisabled:
+            return
         if key.down_arrow:
             state['focusNextOption']()
         if key.up_arrow:
             state['focusPreviousOption']()
         if input == ' ':
             state['toggleFocusedOption']()
-        if key.return_pressed:
+        if key.return_pressed or input in ('\r', '\n'):
             state['submit']()
-    useInput(handleInput, is_active=not isDisabled)
+    useInput(handleInput)
 
 
 def _MultiSelectOption(*children, isFocused, isSelected):

@@ -8,10 +8,10 @@ def App():
         StatusMessage('Error', variant='error'),
         StatusMessage('Warning', variant='warning'),
         StatusMessage('Info', variant='info'),
-        flex_direction='column',
+        flexDirection='column',
         padding=2,
     )
 
 
 if __name__ == '__main__':
-    render(App).wait_until_exit()
+    render(App, interactive=True).wait_until_exit()

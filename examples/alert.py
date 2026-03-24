@@ -8,7 +8,8 @@ def App():
         Alert('Your license is expired', variant='error'),
         Alert('Current version of this CLI has been deprecated', variant='warning'),
         Alert("API won't be available tomorrow night", variant='info'),
-        flex_direction='column',
+        flexDirection='column',
+        alignItems='stretch',
         padding=2,
         width=60,
         gap=1,
@@ -16,4 +17,4 @@ def App():
 
 
 if __name__ == '__main__':
-    render(App).wait_until_exit()
+    render(App, interactive=True).wait_until_exit()
