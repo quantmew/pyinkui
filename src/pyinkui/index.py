@@ -1,6 +1,3 @@
-from pyinkui._pyinkcli_compat import patch_pyinkcli_terminal_compat
-patch_pyinkcli_terminal_compat()
-
 from pyinkui.components.alert import Alert
 from pyinkui.components.badge import Badge
 from pyinkui.components.confirm_input import ConfirmInput

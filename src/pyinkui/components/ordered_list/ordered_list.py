@@ -43,9 +43,13 @@ def _OrderedList(*children: Any) -> Any:
         paddedMarker = f"{str(itemIndex).rjust(maxMarkerWidth)}."
         marker = f"{parentMarker}{paddedMarker}"
         wrappedChildren.append(
-            createElement(
-                orderedListContext.Provider,
-                createElement(orderedListItemContext.Provider, child, value={'marker': marker}),
+                createElement(
+                cast(Any, orderedListContext.Provider),
+                createElement(
+                    cast(Any, orderedListItemContext.Provider),
+                    child,
+                    value={'marker': marker},
+                ),
                 value={'marker': marker},
             )
         )

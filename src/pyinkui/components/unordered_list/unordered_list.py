@@ -41,8 +41,12 @@ def _UnorderedList(*children: Any) -> Any:
 
     content = Box(*children, **styles['list']())
     return createElement(
-        unorderedListContext.Provider,
-        createElement(unorderedListItemContext.Provider, content, value=next_item_context),
+        cast(Any, unorderedListContext.Provider),
+        createElement(
+            cast(Any, unorderedListItemContext.Provider),
+            content,
+            value=next_item_context,
+        ),
         value=next_list_context,
     )
 

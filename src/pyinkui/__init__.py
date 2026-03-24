@@ -1,5 +1,4 @@
 from pyinkui._pyinkcli_compat import patch_pyinkcli_terminal_compat
-patch_pyinkcli_terminal_compat()
 
 from pyinkui.index import Alert
 from pyinkui.index import Badge
@@ -22,6 +21,8 @@ from pyinkui.index import extendTheme
 from pyinkui.index import spinners
 from pyinkui.index import useComponentTheme
 from pyinkui.index import useSpinner
+
+patch_pyinkcli_terminal_compat()
 
 __version__ = "0.1.0"
 

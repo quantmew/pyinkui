@@ -1,6 +1,10 @@
 import sys
 from pathlib import Path
 
+from pyinkcli import Box, Text, render
+from pyinkcli.hooks import useState
+from pyinkui import Select
+
 
 ROOT = Path(__file__).resolve().parents[2]
 CLI_SRC = ROOT.parent / 'pyinkcli' / 'src'
@@ -9,10 +13,6 @@ UI_SRC = ROOT / 'src'
 for candidate in (str(CLI_SRC), str(UI_SRC)):
     if candidate not in sys.path:
         sys.path.insert(0, candidate)
-
-from pyinkcli import Box, Text, render
-from pyinkui import Select
-from pyinkcli.hooks import useState
 
 
 def App():

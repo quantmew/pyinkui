@@ -1,9 +1,13 @@
+from __future__ import annotations
+
+from typing import Any
+
 from pyinkcli import Box, Text
 from pyinkcli.component import createElement
 from pyinkui.theme import useComponentTheme
 
 
-def _Alert(*children, variant, title=None):
+def _Alert(*children: Any, variant: str, title: str | None = None) -> Any:
     theme = useComponentTheme('Alert')
     styles = theme['styles']
     config = theme['config']
@@ -18,5 +22,5 @@ def _Alert(*children, variant, title=None):
     )
 
 
-def Alert(*children, variant, title=None):
+def Alert(*children: Any, variant: str, title: str | None = None) -> Any:
     return createElement(_Alert, *children, variant=variant, title=title)

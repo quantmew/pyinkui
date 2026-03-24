@@ -1,14 +1,25 @@
 from __future__ import annotations
 
+from typing import Any, Callable, cast
+
 from pyinkcli import Box, Text, useInput
 from pyinkcli.component import createElement
 from pyinkcli.hooks._runtime import useCallback, useEffect, useMemo, useReducer, useState
 from pyinkui._figures import pointer, tick
 from pyinkui.lib.option_map import OptionMap
+from pyinkui.types import Option
 from pyinkui.theme import useComponentTheme
 
+useCallback_ = cast(Any, useCallback)
+useEffect_ = cast(Any, useEffect)
+useInput_ = cast(Any, useInput)
+useMemo_ = cast(Any, useMemo)
+useReducer_ = cast(Any, useReducer)
+useState_ = cast(Any, useState)
+OptionItem = Option
 
-def _reducer(state, action):
+
+def _reducer(state: dict[str, Any], action: dict[str, Any]) -> dict[str, Any]:
     if action['type'] == 'focus-next-option':
         if not state['focusedValue']:
             return state
@@ -43,11 +54,16 @@ def _reducer(state, action):
             return {**state, 'previousValue': state['value'], 'value': newValue}
         return {**state, 'previousValue': state['value'], 'value': [*state['value'], state['focusedValue']]}
     if action['type'] == 'reset':
-        return action['state']
+        return cast(dict[str, Any], action['state'])
     return state
 
 
-def _createDefaultState(*, visibleOptionCount, defaultValue, options):
+def _createDefaultState(
+    *,
+    visibleOptionCount: int | None,
+    defaultValue: list[str] | None,
+    options: list[OptionItem],
+) -> dict[str, Any]:
     visibleOptionCount = min(visibleOptionCount, len(options)) if isinstance(visibleOptionCount, int) else len(options)
     optionMap = OptionMap(options)
     value = defaultValue or []
@@ -62,22 +78,36 @@ def _createDefaultState(*, visibleOptionCount, defaultValue, options):
     }
 
 
-def useMultiSelectState(*, visibleOptionCount=5, options, defaultValue=None, onChange=None, onSubmit=None):
-    state, dispatch = useReducer(_reducer, {'visibleOptionCount': visibleOptionCount, 'defaultValue': defaultValue, 'options': options}, lambda initial: _createDefaultState(**initial))
-    lastOptions, setLastOptions = useState(options)
+def useMultiSelectState(
+    *,
+    visibleOptionCount: int = 5,
+    options: list[OptionItem],
+    defaultValue: list[str] | None = None,
+    onChange: Callable[[list[str]], Any] | None = None,
+    onSubmit: Callable[[list[str]], Any] | None = None,
+) -> dict[str, Any]:
+    state, dispatch = useReducer_(
+        _reducer,
+        {'visibleOptionCount': visibleOptionCount, 'defaultValue': defaultValue, 'options': options},
+        lambda initial: _createDefaultState(**initial),
+    )
+    lastOptions, setLastOptions = useState_(options)
     if options is not lastOptions and options != lastOptions:
         dispatch({'type': 'reset', 'state': _createDefaultState(visibleOptionCount=visibleOptionCount, defaultValue=defaultValue, options=options)})
         setLastOptions(options)
-    focusNextOption = useCallback(lambda: dispatch({'type': 'focus-next-option'}), ())
-    focusPreviousOption = useCallback(lambda: dispatch({'type': 'focus-previous-option'}), ())
-    toggleFocusedOption = useCallback(lambda: dispatch({'type': 'toggle-focused-option'}), ())
-    submit = useCallback(lambda: onSubmit(state['value']) if onSubmit else None, (tuple(state['value']), onSubmit))
-    visibleOptions = useMemo(lambda: [{**option, 'index': index} for index, option in enumerate(options)][state['visibleFromIndex'] : state['visibleToIndex']], (tuple((o['label'], o['value']) for o in options), state['visibleFromIndex'], state['visibleToIndex']))
+    focusNextOption = useCallback_(lambda: dispatch({'type': 'focus-next-option'}), ())
+    focusPreviousOption = useCallback_(lambda: dispatch({'type': 'focus-previous-option'}), ())
+    toggleFocusedOption = useCallback_(lambda: dispatch({'type': 'toggle-focused-option'}), ())
+    submit = useCallback_(lambda: onSubmit(state['value']) if onSubmit else None, (tuple(state['value']), onSubmit))
+    visibleOptions = useMemo_(
+        lambda: [{**option, 'index': index} for index, option in enumerate(options)][state['visibleFromIndex'] : state['visibleToIndex']],
+        (tuple((o['label'], o['value']) for o in options), state['visibleFromIndex'], state['visibleToIndex']),
+    )
 
-    def emitChange():
+    def emitChange() -> None:
         if state['previousValue'] != state['value'] and onChange:
             onChange(state['value'])
-    useEffect(lambda: (emitChange(), None)[1], (tuple(state['previousValue']), tuple(state['value']), tuple((o['label'], o['value']) for o in options), onChange))
+    useEffect_(lambda: emitChange(), (tuple(state['previousValue']), tuple(state['value']), tuple((o['label'], o['value']) for o in options), onChange))
     return {
         'focusedValue': state['focusedValue'],
         'visibleFromIndex': state['visibleFromIndex'],
@@ -91,8 +121,8 @@ def useMultiSelectState(*, visibleOptionCount=5, options, defaultValue=None, onC
     }
 
 
-def useMultiSelect(*, isDisabled=False, state):
-    def handleInput(input, key):
+def useMultiSelect(*, isDisabled: bool = False, state: dict[str, Any]) -> None:
+    def handleInput(input: str, key: Any) -> None:
         if isDisabled:
             return
         if key.down_arrow:
@@ -103,10 +133,10 @@ def useMultiSelect(*, isDisabled=False, state):
             state['toggleFocusedOption']()
         if key.return_pressed or input in ('\r', '\n'):
             state['submit']()
-    useInput(handleInput)
+    useInput_(handleInput)
 
 
-def _MultiSelectOption(*children, isFocused, isSelected):
+def _MultiSelectOption(*children: Any, isFocused: bool, isSelected: bool) -> Any:
     styles = useComponentTheme('MultiSelect')['styles']
     nodes = []
     if isFocused:
@@ -117,11 +147,21 @@ def _MultiSelectOption(*children, isFocused, isSelected):
     return Box(*nodes, **styles['option']({'isFocused': isFocused}))
 
 
-def MultiSelectOption(*children, isFocused, isSelected):
+def MultiSelectOption(*children: Any, isFocused: bool, isSelected: bool) -> Any:
     return createElement(_MultiSelectOption, *children, isFocused=isFocused, isSelected=isSelected)
 
 
-def _MultiSelect(*, isDisabled=False, visibleOptionCount=5, highlightText=None, options, defaultValue=None, onChange=None, onSubmit=None):
+def _MultiSelect(
+    *,
+    isDisabled: bool = False,
+    visibleOptionCount: int = 5,
+    highlightText: str | None = None,
+    options: list[OptionItem] | None = None,
+    defaultValue: list[str] | None = None,
+    onChange: Callable[[list[str]], Any] | None = None,
+    onSubmit: Callable[[list[str]], Any] | None = None,
+) -> Any:
+    options = options or []
     state = useMultiSelectState(visibleOptionCount=visibleOptionCount, options=options, defaultValue=defaultValue, onChange=onChange, onSubmit=onSubmit)
     useMultiSelect(isDisabled=isDisabled, state=state)
     styles = useComponentTheme('MultiSelect')['styles']
@@ -135,7 +175,16 @@ def _MultiSelect(*, isDisabled=False, visibleOptionCount=5, highlightText=None, 
     return Box(*children, **styles['container']())
 
 
-def MultiSelect(*, isDisabled=False, visibleOptionCount=5, highlightText=None, options=None, defaultValue=None, onChange=None, onSubmit=None):
+def MultiSelect(
+    *,
+    isDisabled: bool = False,
+    visibleOptionCount: int = 5,
+    highlightText: str | None = None,
+    options: list[OptionItem] | None = None,
+    defaultValue: list[str] | None = None,
+    onChange: Callable[[list[str]], Any] | None = None,
+    onSubmit: Callable[[list[str]], Any] | None = None,
+) -> Any:
     return createElement(
         _MultiSelect,
         isDisabled=isDisabled,

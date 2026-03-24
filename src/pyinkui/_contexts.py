@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import cast
+
 from pyinkcli.packages.react import createContext, useContext
 
 orderedListContext = createContext({'marker': ''})
@@ -9,16 +11,16 @@ unorderedListItemContext = createContext({'marker': '─'})
 
 
 def getOrderedListContext() -> dict[str, str]:
-    return useContext(orderedListContext)
+    return cast(dict[str, str], useContext(orderedListContext))
 
 
 def getOrderedListItemContext() -> dict[str, str]:
-    return useContext(orderedListItemContext)
+    return cast(dict[str, str], useContext(orderedListItemContext))
 
 
 def getUnorderedListContext() -> dict[str, int]:
-    return useContext(unorderedListContext)
+    return cast(dict[str, int], useContext(unorderedListContext))
 
 
 def getUnorderedListItemContext() -> dict[str, str]:
-    return useContext(unorderedListItemContext)
+    return cast(dict[str, str], useContext(unorderedListItemContext))

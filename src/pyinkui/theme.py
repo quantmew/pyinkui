@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from pyinkui._merge import deepMerge
 from pyinkui._theme_context import getThemeContext, provideThemeContext
 from pyinkui._figures import info, tick, cross, warning, line, square, squareLightShade
 
 
-badgeTheme = {
+badgeTheme: dict[str, Any] = {
     'styles': {
         'container': lambda props=None: {'backgroundColor': (props or {}).get('color')},
         'label': lambda props=None: {'color': 'black'},
@@ -66,7 +66,7 @@ unorderedListTheme = {
     'config': lambda props=None: {'marker': line},
 }
 
-progressBarTheme = {
+progressBarTheme: dict[str, Any] = {
     'styles': {
         'container': lambda props=None: {'flexGrow': 1, 'minWidth': 0},
         'completed': lambda props=None: {'color': 'magenta'},
@@ -78,7 +78,7 @@ progressBarTheme = {
     },
 }
 
-statusMessageTheme = {
+statusMessageTheme: dict[str, Any] = {
     'styles': {
         'container': lambda props=None: {'gap': 1},
         'iconContainer': lambda props=None: {'flexShrink': 0},
@@ -90,7 +90,7 @@ statusMessageTheme = {
     },
 }
 
-alertTheme = {
+alertTheme: dict[str, Any] = {
     'styles': {
         'container': lambda props=None: {
             'flexGrow': 1,
@@ -116,7 +116,7 @@ alertTheme = {
 }
 
 
-defaultTheme = {
+defaultTheme: dict[str, dict[str, Any]] = {
     'components': {
         'Alert': alertTheme,
         'Badge': badgeTheme,
@@ -143,10 +143,10 @@ def extendTheme(originalTheme: dict[str, Any], newTheme: dict[str, Any]) -> dict
     return deepMerge(originalTheme, newTheme)
 
 
-def ThemeProvider(*children, theme: dict[str, Any]):
+def ThemeProvider(*children: Any, theme: dict[str, Any]) -> Any:
     return provideThemeContext(*children, theme=theme)
 
 
-def useComponentTheme(component: str):
+def useComponentTheme(component: str) -> dict[str, Any]:
     theme = getThemeContext() or defaultTheme
-    return theme['components'][component]
+    return cast(dict[str, Any], theme['components'][component])

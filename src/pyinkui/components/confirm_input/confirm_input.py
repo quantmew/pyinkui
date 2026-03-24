@@ -1,19 +1,25 @@
+from __future__ import annotations
+
+from typing import Any, Callable, cast
+
 from pyinkcli import Box, Text, useInput
 from pyinkcli.component import createElement
 from pyinkui.theme import useComponentTheme
 
+useInput_ = cast(Any, useInput)
+
 
 def _ConfirmInput(
     *,
-    isDisabled=False,
-    defaultChoice='confirm',
-    submitOnEnter=True,
-    onConfirm,
-    onCancel,
-):
+    isDisabled: bool = False,
+    defaultChoice: str = "confirm",
+    submitOnEnter: bool = True,
+    onConfirm: Callable[[], Any] | None = None,
+    onCancel: Callable[[], Any] | None = None,
+) -> Any:
     styles = useComponentTheme('ConfirmInput')['styles']
 
-    def handleInput(input, key):
+    def handleInput(input: str, key: Any) -> None:
         if isDisabled:
             return
         if input == 'y' or input == 'Y':
@@ -31,14 +37,21 @@ def _ConfirmInput(
             elif onCancel:
                 onCancel()
 
-    useInput(handleInput)
+    useInput_(handleInput)
 
     return Box(
         Text('Y/n' if defaultChoice == 'confirm' else 'y/N', **styles['input']({'isFocused': not isDisabled})),
     )
 
 
-def ConfirmInput(*, isDisabled=False, defaultChoice='confirm', submitOnEnter=True, onConfirm, onCancel):
+def ConfirmInput(
+    *,
+    isDisabled: bool = False,
+    defaultChoice: str = "confirm",
+    submitOnEnter: bool = True,
+    onConfirm: Callable[[], Any] | None = None,
+    onCancel: Callable[[], Any] | None = None,
+) -> Any:
     return createElement(
         _ConfirmInput,
         isDisabled=isDisabled,

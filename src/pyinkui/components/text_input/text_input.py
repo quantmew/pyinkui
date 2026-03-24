@@ -1,15 +1,22 @@
 from __future__ import annotations
 
+from typing import Any, Callable, cast
+
 from pyinkcli import Text, useInput
 from pyinkcli.component import createElement
 from pyinkcli.hooks._runtime import useCallback, useEffect, useMemo, useReducer
 from pyinkui._ansi import dim, inverse
 from pyinkui.theme import useComponentTheme
 
+useCallback_ = cast(Any, useCallback)
+useEffect_ = cast(Any, useEffect)
+useInput_ = cast(Any, useInput)
+useMemo_ = cast(Any, useMemo)
+useReducer_ = cast(Any, useReducer)
 cursor = inverse(' ')
 
 
-def _reducer(state, action):
+def _reducer(state: dict[str, Any], action: dict[str, Any]) -> dict[str, Any]:
     if action['type'] == 'move-cursor-left':
         return {**state, 'cursorOffset': max(0, state['cursorOffset'] - 1)}
     if action['type'] == 'move-cursor-right':
@@ -32,14 +39,20 @@ def _reducer(state, action):
     return state
 
 
-def useTextInputState(*, defaultValue='', suggestions=None, onChange=None, onSubmit=None):
-    state, dispatch = useReducer(_reducer, {
+def useTextInputState(
+    *,
+    defaultValue: str = '',
+    suggestions: list[str] | None = None,
+    onChange: Callable[[str], Any] | None = None,
+    onSubmit: Callable[[str], Any] | None = None,
+) -> dict[str, Any]:
+    state, dispatch = useReducer_(_reducer, {
         'previousValue': defaultValue,
         'value': defaultValue,
         'cursorOffset': len(defaultValue),
     })
 
-    def createSuggestion():
+    def createSuggestion() -> str | None:
         if len(state['value']) == 0:
             return None
         if not suggestions:
@@ -49,13 +62,13 @@ def useTextInputState(*, defaultValue='', suggestions=None, onChange=None, onSub
                 return suggestion.replace(state['value'], '', 1)
         return None
 
-    suggestion = useMemo(createSuggestion, (state['value'], tuple(suggestions or [])))
-    moveCursorLeft = useCallback(lambda: dispatch({'type': 'move-cursor-left'}), ())
-    moveCursorRight = useCallback(lambda: dispatch({'type': 'move-cursor-right'}), ())
-    insert = useCallback(lambda text: dispatch({'type': 'insert', 'text': text}), ())
-    delete = useCallback(lambda: dispatch({'type': 'delete'}), ())
+    suggestion = useMemo_(createSuggestion, (state['value'], tuple(suggestions or [])))
+    moveCursorLeft = useCallback_(lambda: dispatch({'type': 'move-cursor-left'}), ())
+    moveCursorRight = useCallback_(lambda: dispatch({'type': 'move-cursor-right'}), ())
+    insert = useCallback_(lambda text: dispatch({'type': 'insert', 'text': text}), ())
+    delete = useCallback_(lambda: dispatch({'type': 'delete'}), ())
 
-    def submitCallback():
+    def submitCallback() -> None:
         if suggestion:
             insert(suggestion)
             if onSubmit:
@@ -64,13 +77,13 @@ def useTextInputState(*, defaultValue='', suggestions=None, onChange=None, onSub
         if onSubmit:
             onSubmit(state['value'])
 
-    submit = useCallback(submitCallback, (state['value'], suggestion, insert, onSubmit))
+    submit = useCallback_(submitCallback, (state['value'], suggestion, insert, onSubmit))
 
-    def emitChange():
+    def emitChange() -> None:
         if state['value'] != state['previousValue'] and onChange:
             onChange(state['value'])
 
-    useEffect(lambda: (emitChange(), None)[1], (state['previousValue'], state['value'], onChange))
+    useEffect_(lambda: emitChange(), (state['previousValue'], state['value'], onChange))
 
     return {
         **state,
@@ -83,17 +96,17 @@ def useTextInputState(*, defaultValue='', suggestions=None, onChange=None, onSub
     }
 
 
-def useTextInput(*, isDisabled=False, state, placeholder=''):
-    def renderPlaceholder():
+def useTextInput(*, isDisabled: bool = False, state: dict[str, Any], placeholder: str = '') -> dict[str, Any]:
+    def renderPlaceholder() -> str:
         if isDisabled:
             return dim(placeholder) if placeholder else ''
         return inverse(placeholder[0]) + dim(placeholder[1:]) if placeholder else cursor
 
-    renderedPlaceholder = useMemo(renderPlaceholder, (isDisabled, placeholder))
+    renderedPlaceholder = useMemo_(renderPlaceholder, (isDisabled, placeholder))
 
-    def renderValue():
+    def renderValue() -> str:
         if isDisabled:
-            return state['value']
+            return cast(str, state['value'])
         index = 0
         result = '' if len(state['value']) > 0 else cursor
         for character in state['value']:
@@ -107,9 +120,9 @@ def useTextInput(*, isDisabled=False, state, placeholder=''):
             result += cursor
         return result
 
-    renderedValue = useMemo(renderValue, (isDisabled, state['value'], state['cursorOffset'], state['suggestion']))
+    renderedValue = useMemo_(renderValue, (isDisabled, state['value'], state['cursorOffset'], state['suggestion']))
 
-    def handleInput(input, key):
+    def handleInput(input: str, key: Any) -> None:
         if isDisabled:
             return
         if key.up_arrow or key.down_arrow or (key.ctrl and input == 'c') or key.name == 'tab':
@@ -126,18 +139,34 @@ def useTextInput(*, isDisabled=False, state, placeholder=''):
         elif input:
             state['insert'](input)
 
-    useInput(handleInput)
+    useInput_(handleInput)
     return {'inputValue': renderedValue if len(state['value']) > 0 else renderedPlaceholder}
 
 
-def _TextInput(*, isDisabled=False, defaultValue=None, placeholder='', suggestions=None, onChange=None, onSubmit=None):
+def _TextInput(
+    *,
+    isDisabled: bool = False,
+    defaultValue: str | None = None,
+    placeholder: str = '',
+    suggestions: list[str] | None = None,
+    onChange: Callable[[str], Any] | None = None,
+    onSubmit: Callable[[str], Any] | None = None,
+) -> Any:
     state = useTextInputState(defaultValue=defaultValue or '', suggestions=suggestions, onChange=onChange, onSubmit=onSubmit)
     inputValue = useTextInput(isDisabled=isDisabled, placeholder=placeholder, state=state)['inputValue']
     styles = useComponentTheme('TextInput')['styles']
     return Text(inputValue, **styles['value']())
 
 
-def TextInput(*, isDisabled=False, defaultValue=None, placeholder='', suggestions=None, onChange=None, onSubmit=None):
+def TextInput(
+    *,
+    isDisabled: bool = False,
+    defaultValue: str | None = None,
+    placeholder: str = '',
+    suggestions: list[str] | None = None,
+    onChange: Callable[[str], Any] | None = None,
+    onSubmit: Callable[[str], Any] | None = None,
+) -> Any:
     return createElement(
         _TextInput,
         isDisabled=isDisabled,

@@ -38,12 +38,12 @@ def patch_pyinkcli_terminal_compat() -> None:
         return
 
     try:
-        import pyinkcli.runtime.output_driver as output_driver
+        import pyinkcli.runtime.output_driver as output_driver  # type: ignore[import-not-found]
         import pyinkcli.write_synchronized as write_synchronized
     except Exception:  # noqa: BLE001
         return
 
-    def _disabled_should_synchronize(stream, interactive: bool | None = None) -> bool:
+    def _disabled_should_synchronize(stream: object, interactive: bool | None = None) -> bool:
         return False
 
     write_synchronized.shouldSynchronize = _disabled_should_synchronize

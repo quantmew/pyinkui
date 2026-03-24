@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 from copy import deepcopy
+from typing import Any
 
 
-def deepMerge(originalTheme, newTheme):
+def deepMerge(originalTheme: dict[str, Any], newTheme: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(originalTheme, dict) or not isinstance(newTheme, dict):
         return deepcopy(newTheme)
 

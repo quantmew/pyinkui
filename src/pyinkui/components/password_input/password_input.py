@@ -1,15 +1,22 @@
 from __future__ import annotations
 
+from typing import Any, Callable, cast
+
 from pyinkcli import Text, useInput
 from pyinkcli.component import createElement
 from pyinkcli.hooks._runtime import useCallback, useEffect, useMemo, useReducer
 from pyinkui._ansi import dim, inverse
 from pyinkui.theme import useComponentTheme
 
+useCallback_ = cast(Any, useCallback)
+useEffect_ = cast(Any, useEffect)
+useInput_ = cast(Any, useInput)
+useMemo_ = cast(Any, useMemo)
+useReducer_ = cast(Any, useReducer)
 cursor = inverse(' ')
 
 
-def _reducer(state, action):
+def _reducer(state: dict[str, Any], action: dict[str, Any]) -> dict[str, Any]:
     if action['type'] == 'move-cursor-left':
         return {**state, 'cursorOffset': max(0, state['cursorOffset'] - 1)}
     if action['type'] == 'move-cursor-right':
@@ -32,29 +39,33 @@ def _reducer(state, action):
     return state
 
 
-def usePasswordInputState(*, onChange=None, onSubmit=None):
-    state, dispatch = useReducer(_reducer, {'previousValue': '', 'value': '', 'cursorOffset': 0})
-    moveCursorLeft = useCallback(lambda: dispatch({'type': 'move-cursor-left'}), ())
-    moveCursorRight = useCallback(lambda: dispatch({'type': 'move-cursor-right'}), ())
-    insert = useCallback(lambda text: dispatch({'type': 'insert', 'text': text}), ())
-    delete = useCallback(lambda: dispatch({'type': 'delete'}), ())
-    submit = useCallback(lambda: onSubmit(state['value']) if onSubmit else None, (state['value'], onSubmit))
+def usePasswordInputState(
+    *,
+    onChange: Callable[[str], Any] | None = None,
+    onSubmit: Callable[[str], Any] | None = None,
+) -> dict[str, Any]:
+    state, dispatch = useReducer_(_reducer, {'previousValue': '', 'value': '', 'cursorOffset': 0})
+    moveCursorLeft = useCallback_(lambda: dispatch({'type': 'move-cursor-left'}), ())
+    moveCursorRight = useCallback_(lambda: dispatch({'type': 'move-cursor-right'}), ())
+    insert = useCallback_(lambda text: dispatch({'type': 'insert', 'text': text}), ())
+    delete = useCallback_(lambda: dispatch({'type': 'delete'}), ())
+    submit = useCallback_(lambda: onSubmit(state['value']) if onSubmit else None, (state['value'], onSubmit))
 
-    def emitChange():
+    def emitChange() -> None:
         if state['value'] != state['previousValue'] and onChange:
             onChange(state['value'])
-    useEffect(lambda: (emitChange(), None)[1], (state['previousValue'], state['value'], onChange))
+    useEffect_(lambda: emitChange(), (state['previousValue'], state['value'], onChange))
 
     return {**state, 'moveCursorLeft': moveCursorLeft, 'moveCursorRight': moveCursorRight, 'insert': insert, 'delete': delete, 'submit': submit}
 
 
-def usePasswordInput(*, isDisabled=False, state, placeholder=''):
-    renderedPlaceholder = useMemo(
+def usePasswordInput(*, isDisabled: bool = False, state: dict[str, Any], placeholder: str = '') -> dict[str, Any]:
+    renderedPlaceholder = useMemo_(
         lambda: dim(placeholder) if (isDisabled and placeholder) else (inverse(placeholder[0]) + dim(placeholder[1:]) if placeholder else cursor),
         (isDisabled, placeholder),
     )
 
-    def renderValue():
+    def renderValue() -> str:
         value = '*' * len(state['value'])
         if isDisabled:
             return value
@@ -67,9 +78,9 @@ def usePasswordInput(*, isDisabled=False, state, placeholder=''):
             result += cursor
         return result
 
-    renderedValue = useMemo(renderValue, (isDisabled, state['value'], state['cursorOffset']))
+    renderedValue = useMemo_(renderValue, (isDisabled, state['value'], state['cursorOffset']))
 
-    def handleInput(input, key):
+    def handleInput(input: str, key: Any) -> None:
         if isDisabled:
             return
         if key.up_arrow or key.down_arrow or (key.ctrl and input == 'c') or key.name == 'tab':
@@ -86,18 +97,30 @@ def usePasswordInput(*, isDisabled=False, state, placeholder=''):
         elif input:
             state['insert'](input)
 
-    useInput(handleInput)
+    useInput_(handleInput)
     return {'inputValue': renderedValue if len(state['value']) > 0 else renderedPlaceholder}
 
 
-def _PasswordInput(*, isDisabled=False, placeholder='', onChange=None, onSubmit=None):
+def _PasswordInput(
+    *,
+    isDisabled: bool = False,
+    placeholder: str = '',
+    onChange: Callable[[str], Any] | None = None,
+    onSubmit: Callable[[str], Any] | None = None,
+) -> Any:
     state = usePasswordInputState(onChange=onChange, onSubmit=onSubmit)
     inputValue = usePasswordInput(isDisabled=isDisabled, placeholder=placeholder, state=state)['inputValue']
     styles = useComponentTheme('PasswordInput')['styles']
     return Text(inputValue, **styles['value']())
 
 
-def PasswordInput(*, isDisabled=False, placeholder='', onChange=None, onSubmit=None):
+def PasswordInput(
+    *,
+    isDisabled: bool = False,
+    placeholder: str = '',
+    onChange: Callable[[str], Any] | None = None,
+    onSubmit: Callable[[str], Any] | None = None,
+) -> Any:
     return createElement(
         _PasswordInput,
         isDisabled=isDisabled,
